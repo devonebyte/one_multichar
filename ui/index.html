@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Creator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #2c2f33;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .character-creator {
+            background: rgba(44, 47, 51, 0.95);
+            border-radius: 10px;
+            padding: 30px;
+            width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+        }
+
+        .character-creator h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button-group .save-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        .button-group .cancel-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .button-group button:hover {
+            opacity: 0.8;
+        }
+
+        .character-preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .character-preview img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            border: 2px solid #ccc;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="character-creator">
+            <h1>Create Your Character</h1>
+            <form id="characterForm">
+                <div class="form-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" placeholder="Enter first name">
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname" placeholder="Enter last name">
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="character-preview">
+                    <p>Character Preview</p>
+                    <img src="placeholder.png" alt="Character Preview">
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="save-btn" onclick="saveCharacter()">Save</button>
+                    <button type="button" class="cancel-btn" onclick="cancelCreation()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function saveCharacter() {
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+
+            if (!firstname || !lastname || !dob || !gender) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Send data to the server
+            fetch('https://your_resource_name/saveCharacter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ firstname, lastname, dob, gender })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Character saved successfully!');
+                } else {
+                    alert('Failed to save character.');
+                }
+            }).catch(err => {
+                console.error('Error:', err);
+                alert('An error occurred.');
+            });
+        }
+
+        function cancelCreation() {
+            // Close the UI or reset the form
+            document.getElementById('characterForm').reset();
+        }
+    </script>
+</body>
+</html>
